@@ -1,5 +1,6 @@
 package br.com.allfilms.film.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -27,6 +28,7 @@ public class User {
     private String loginMail;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "name", nullable = false)
@@ -36,9 +38,13 @@ public class User {
     private String surname;
 
     @Column(name = "bornDate", nullable = false)
-    private String bornDate;
+    private Date bornDate;
+
+    @Column(name = "activeUser", nullable = false)
+    private boolean activeUser;
 
     @Column(name = "createdAt")
     @CreationTimestamp
+    @JsonIgnore
     private Date createdAt;
 }

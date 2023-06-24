@@ -3,9 +3,9 @@ package br.com.allfilms.film.repository;
 import br.com.allfilms.film.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT u FROM User u WHERE u.loginMail = :loginMail")
     Optional<User> findUser(String loginMail);
+
+    @Query(value = "select case when (count(User) > 0)  then true else false end from User u where u.activeUser = :activeUser")
+    Boolean activeUser(@Param("activeUser")boolean activeUser);
 }
