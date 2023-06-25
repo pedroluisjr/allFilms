@@ -4,11 +4,16 @@ import br.com.allfilms.film.dto.RefreshUserDto;
 import br.com.allfilms.film.dto.UserDto;
 import br.com.allfilms.film.model.User;
 import br.com.allfilms.film.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
+import javax.validation.Valid;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -16,17 +21,27 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
     @PostMapping("/addUser")
-    public String saveUser(@RequestBody UserDto userDto) throws ParseException {
-        return userService.addUser(userDto);
+    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException, JsonProcessingException {
+        return ResponseEntity.status(201).body(userService.addUser(userDto));
     }
+
     @GetMapping("/allUsers")
-    public Object allUsers () {
+    public Object allUsers() {
         return userService.listAll();
     }
 
     @PutMapping("/{id}")
     public User refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
         return this.userService.refreshUser(id, user);
+    }
+
+    @GetMapping
+    public List<User> allUsers(@RequestParam("active") boolean active) {
+        if (active) {
+            return userService.isUserActive();
+        }
+        return userService.isUserInactive();
     }
 }

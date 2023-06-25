@@ -5,6 +5,10 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Data
@@ -20,16 +24,19 @@ public class User {
 
 
     @Id
-    @Column(name = "personId", unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long personId;
+    private long id;
 
-    @Column(name = "loginMail", unique = true, nullable = false)
-    private String loginMail;
+    @Column(name = "login", unique = true, nullable = false)
+    private String login;
 
     @Column(name = "password", nullable = false)
     @JsonIgnore
     private String password;
+
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -40,7 +47,8 @@ public class User {
     @Column(name = "bornDate", nullable = false)
     private Date bornDate;
 
-    @Column(name = "activeUser", nullable = false)
+    @Column(name = "activeUser")
+    @JsonIgnore
     private boolean activeUser;
 
     @Column(name = "createdAt")
