@@ -7,12 +7,13 @@ import br.com.allfilms.film.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping("/addUser")
     public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException, JsonProcessingException {
@@ -35,6 +39,16 @@ public class UserController {
     @PutMapping("/{id}")
     public User refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
         return this.userService.refreshUser(id, user);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody UserDto userDto) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDto.getLogin(), userDto.getPassword());
+
+       Authentication authenticate = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+
+       var user = (UserDto) authenticate.getPrincipal();
+       return null;
     }
 
     @GetMapping
