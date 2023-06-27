@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,9 +23,6 @@ public class UserController {
 
     @Autowired
     UserService userService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @PostMapping("/addUser")
     public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException, JsonProcessingException {
@@ -41,16 +39,7 @@ public class UserController {
         return this.userService.refreshUser(id, user);
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody UserDto userDto) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDto.getLogin(), userDto.getPassword());
-
-       Authentication authenticate = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-       var user = (UserDto) authenticate.getPrincipal();
-       return null;
-    }
-
+    //TODO: Terminar implementação do JWT para autenticação.
     @GetMapping
     public List<User> allUsers(@RequestParam("active") boolean active) {
         if (active) {

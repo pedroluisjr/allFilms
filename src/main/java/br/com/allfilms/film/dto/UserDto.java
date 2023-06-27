@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class UserDto implements UserDetails {
+public class UserDto {
     @NotBlank(message = "Login não pode estar em branco")
     @Size(min = 3, max = 20)
     private String login;
@@ -50,41 +50,5 @@ public class UserDto implements UserDetails {
         Date formatedDate = dateFormat.parse(this.bornDate);
         user.setBornDate(formatedDate);
         return user;
-    }
-
-    //TODO: Implementar JWT para autenticação via Token.
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return login;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

@@ -1,17 +1,16 @@
 package br.com.allfilms.film.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "users")
@@ -33,6 +32,7 @@ public class User {
     private String login;
 
     @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @JsonIgnore
     private String password;
 
