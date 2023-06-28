@@ -1,5 +1,6 @@
 package br.com.allfilms.film.Security;
 
+import br.com.allfilms.film.dto.UserDto;
 import br.com.allfilms.film.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +11,9 @@ import java.util.Optional;
 
 public class UserDetailsSecurity implements UserDetails {
 
-   private final Optional<User> user;
+   private final User user;
 
-    public UserDetailsSecurity(Optional<User> user) {
+    public UserDetailsSecurity(User user) {
         this.user = user;
     }
 
@@ -23,12 +24,12 @@ public class UserDetailsSecurity implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.orElse(new User()).getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.orElse(new User()).getLogin();
+        return user.getLogin();
     }
 
     @Override
@@ -48,6 +49,6 @@ public class UserDetailsSecurity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isActiveUser();
     }
 }

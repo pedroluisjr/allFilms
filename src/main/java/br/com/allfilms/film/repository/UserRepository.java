@@ -1,5 +1,6 @@
 package br.com.allfilms.film.repository;
 
+import br.com.allfilms.film.dto.UserDto;
 import br.com.allfilms.film.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.activeUser = false")
     List<User> isInactive();
 
-    public Optional<User> findByLogin(String login);
+    Optional<User> findByLogin(String login);
 }

@@ -33,7 +33,6 @@ public class User {
 
     @Column(name = "password", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @JsonIgnore
     private String password;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -49,7 +48,6 @@ public class User {
     private Date bornDate;
 
     @Column(name = "activeUser")
-    @JsonIgnore
     private boolean activeUser;
 
     @Column(name = "createdAt")

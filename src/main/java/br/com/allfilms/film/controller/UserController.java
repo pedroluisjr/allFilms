@@ -7,10 +7,6 @@ import br.com.allfilms.film.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,9 +30,9 @@ public class UserController {
         return userService.listAll();
     }
 
-    @PutMapping("/{id}")
-    public User refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
-        return this.userService.refreshUser(id, user);
+    @PutMapping
+    public User refreshUser(@RequestBody RefreshUserDto user) {
+        return this.userService.refreshUser(user);
     }
 
     //TODO: Terminar implementação do JWT para autenticação.

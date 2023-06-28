@@ -1,26 +1,28 @@
 package br.com.allfilms.film.Security;
 
-import br.com.allfilms.film.model.User;
+import br.com.allfilms.film.dto.UserDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class JWTAutenthicationFilter extends UsernamePasswordAuthenticationFilter {
 
-    public static final int TOKEN_EXPIRES = 600_00;
+    public static final int TOKEN_EXPIRES = 24;
 
     public static final String TOKEN_PASSWORD = "17750f27-1865-4c9a-94ab-fd1d2004f7cb";
 
@@ -31,10 +33,10 @@ public class JWTAutenthicationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    public Authentication attemptAuthentication(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response) throws AuthenticationException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
         try {
-            User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            UserDto user = new ObjectMapper().readValue(request.getInputStream(), UserDto.class);
 
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     user.getLogin(),
@@ -52,7 +54,7 @@ public class JWTAutenthicationFilter extends UsernamePasswordAuthenticationFilte
         UserDetailsSecurity userDetailsSecurity = (UserDetailsSecurity) authResult.getPrincipal();
 
         String token = JWT.create().withSubject(userDetailsSecurity.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+ TOKEN_EXPIRES))
+                .withExpiresAt(Date.from(Instant.now().plus(TOKEN_EXPIRES, ChronoUnit.HOURS)))
                 .sign(Algorithm.HMAC512(TOKEN_PASSWORD));
 
         response.getWriter().write(token);

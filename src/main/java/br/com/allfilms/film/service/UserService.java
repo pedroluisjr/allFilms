@@ -2,18 +2,15 @@ package br.com.allfilms.film.service;
 
 import br.com.allfilms.film.dto.RefreshUserDto;
 import br.com.allfilms.film.dto.UserDto;
+import br.com.allfilms.film.dto.UserReturnDto;
 import br.com.allfilms.film.model.User;
 import br.com.allfilms.film.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,21 +35,22 @@ public class UserService {
     }
 
     public Object listAll() {
-        return userRepository.findAll();
+        return userRepository.findAll().stream().map(UserReturnDto::new);
     }
 
-    public User refreshUser(Long id, RefreshUserDto refreshUser) {
-        Optional<User> oldUser = userRepository.findById(id);
-        if(oldUser.isPresent())
-        {
-            //TODO: Falta realizar os testes e otimização.
-            User user = refreshUser.user();
-            user.setId(oldUser.get().getId());
-            user.setLogin(oldUser.get().getLogin());
-            user.setCreatedAt(oldUser.get().getCreatedAt());
-            user.setBornDate(oldUser.get().getBornDate());
-            return userRepository.save(user);
-        }
+
+    //TODO: Falta realizar os testes e otimização.
+    public User refreshUser(RefreshUserDto refreshUser) {
+//        Optional<User> oldUser = userRepository.findById(null);
+//        if(oldUser.isPresent())
+//        {
+//            User user = refreshUser.user();
+//            user.setId(oldUser.get().getId());
+//            user.setLogin(oldUser.get().getLogin());
+//            user.setCreatedAt(oldUser.get().getCreatedAt());
+//            user.setBornDate(oldUser.get().getBornDate());
+//            return userRepository.save(user);
+//        }
         return null;
     }
 

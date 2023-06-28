@@ -26,7 +26,7 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException("Usuário: "+username+" não existe");
         }
 
-        return new UserDetailsSecurity(user) {
+        return new UserDetailsSecurity(user.get()) {
         };
     }
 }
