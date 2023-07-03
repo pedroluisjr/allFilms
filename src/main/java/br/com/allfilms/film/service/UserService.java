@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -35,7 +36,7 @@ public class UserService {
     }
 
     public Object listAll() {
-        return userRepository.findAll().stream().map(UserReturnDto::new);
+        return userRepository.findAll().stream().map(UserReturnDto::new).collect(Collectors.toList());
     }
 
 
