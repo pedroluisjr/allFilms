@@ -2,6 +2,7 @@ package br.com.allfilms.film.controller;
 
 import br.com.allfilms.film.dto.RefreshUserDto;
 import br.com.allfilms.film.dto.UserDto;
+import br.com.allfilms.film.dto.UserReturnDto;
 import br.com.allfilms.film.model.User;
 import br.com.allfilms.film.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,9 +31,9 @@ public class UserController {
         return userService.listAll();
     }
 
-    @PutMapping
-    public User refreshUser(@RequestBody RefreshUserDto user) {
-        return this.userService.refreshUser(user);
+    @PutMapping("/{id}")
+    public UserReturnDto refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
+        return this.userService.refreshUser(user, id);
     }
 
     //TODO: Terminar implementação do JWT para autenticação.

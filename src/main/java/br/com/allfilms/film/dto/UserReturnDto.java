@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.modelmapper.spi.MappingContext;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 @Data
@@ -20,19 +22,10 @@ public class UserReturnDto {
     private String surname;
     private String bornDate;
     private boolean activeUser;
-
-
-    private Converter<User, String> getBornDateConverter() {
-        return context -> {
-            User user = context.getSource();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            return dateFormat.format(user.getBornDate());
-        };
-
-    }
+    
     public UserReturnDto(User user) {
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.addConverter(getBornDateConverter());
-        modelMapper.map(user, this);
+        new ModelMapper().map(user, this);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        this.bornDate = dateFormat.format(user.getBornDate());
     }
 }
