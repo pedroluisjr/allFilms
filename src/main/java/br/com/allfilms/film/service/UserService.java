@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -34,7 +36,7 @@ public class UserService {
         Optional<User> user = userRepository.findUser(userDto.getLogin(), userDto.getEmail());
         if (user.isEmpty()) {
             userDto.setPassword(passwordEncode(userDto.getPassword()));
-            userRepository.save(userDto.user());
+            userRepository.save(userDto.toUser());
             return "Usuário Cadastrado";
         } else {
             return null;
@@ -66,4 +68,10 @@ public class UserService {
     public List<User> isUserInactive() {
         return userRepository.isInactive();
     }
+
+    //TODO: REALIZAR AS IMPLEMENTAÇÕES PARA HISTORICO.
+
+//    public Optional<User> getUserById(Long id) {
+//        return Res;
+//    }
 }

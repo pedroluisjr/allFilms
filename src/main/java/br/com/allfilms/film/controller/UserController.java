@@ -15,18 +15,18 @@ import java.text.ParseException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/usuario")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @PostMapping("/addUser")
-    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException, JsonProcessingException {
+    @PostMapping
+    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException {
         return ResponseEntity.status(201).body(userService.addUser(userDto));
     }
 
-    @GetMapping("/allUsers")
+    @GetMapping
     public Object allUsers() {
         return userService.listAll();
     }
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     //TODO: Terminar implementação do JWT para autenticação.
-    @GetMapping
+    @GetMapping("/ativos")
     public List<User> allUsers(@RequestParam("active") boolean active) {
         if (active) {
             return userService.isUserActive();
