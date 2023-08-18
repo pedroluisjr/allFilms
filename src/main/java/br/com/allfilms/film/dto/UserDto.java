@@ -10,9 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,7 +35,13 @@ public class UserDto {
     @NotNull(message = "Data de aniversário não pode estar em branco")
     private String bornDate;
 
-    public User toUser() throws ParseException {
+    private boolean active;
+
+    public User toUser() {
         return new ModelMapper().map(this, User.class);
+    }
+
+    public UserDto(User user) {
+        new ModelMapper().map(user, this);
     }
 }

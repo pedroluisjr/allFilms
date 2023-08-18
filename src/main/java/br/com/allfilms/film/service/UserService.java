@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,14 +33,15 @@ public class UserService {
         return this.passwordEncoder.encode(password);
     }
 
-    public String addUser(@Valid UserDto userDto) throws ParseException {
+    public ResponseEntity<User> addUser(@Valid UserDto userDto) {
         Optional<User> user = userRepository.findUser(userDto.getLogin(), userDto.getEmail());
         if (user.isEmpty()) {
             userDto.setPassword(passwordEncode(userDto.getPassword()));
+            userDto.setActive(true);
             userRepository.save(userDto.toUser());
-            return "Usuário Cadastrado";
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
@@ -49,7 +51,7 @@ public class UserService {
 
 
     //TODO: Não está passando pelo constructor no return.
-    public UserReturnDto refreshUser(RefreshUserDto refreshUser, Long id) {
+    public ResponseEntity<UserReturnDto> refreshUser(RefreshUserDto refreshUser, Long id) {
         Optional<User> oldUser = userRepository.findById(id);
         if(oldUser.isPresent())
         {
@@ -57,9 +59,10 @@ public class UserService {
             user.setPassword(passwordEncode(refreshUser.getPassword()));
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-            return objectMapper.convertValue(userRepository.save(user), UserReturnDto.class);
+            objectMapper.convertValue(userRepository.save(user), UserReturnDto.class);
+            return ResponseEntity.status(HttpStatus.OK).build();
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     public List<User> isUserActive() {
@@ -71,7 +74,7 @@ public class UserService {
 
     //TODO: REALIZAR AS IMPLEMENTAÇÕES PARA HISTORICO.
 
-//    public Optional<User> getUserById(Long id) {
-//        return Res;
-//    }
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }

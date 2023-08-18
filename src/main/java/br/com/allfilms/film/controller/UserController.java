@@ -22,8 +22,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ResponseEntity<String> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException {
-        return ResponseEntity.status(201).body(userService.addUser(userDto));
+    public ResponseEntity<User> saveUser(@Valid @RequestBody UserDto userDto) throws ParseException {
+        return userService.addUser(userDto);
     }
 
     @GetMapping
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserReturnDto refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
+    public ResponseEntity<UserReturnDto> refreshUser(@PathVariable("id") Long id, @RequestBody RefreshUserDto user) {
         return this.userService.refreshUser(user, id);
     }
 
