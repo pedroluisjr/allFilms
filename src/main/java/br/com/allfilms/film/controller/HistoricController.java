@@ -2,7 +2,6 @@ package br.com.allfilms.film.controller;
 
 import br.com.allfilms.film.dto.HistoricDto;
 import br.com.allfilms.film.model.Historic;
-import br.com.allfilms.film.model.User;
 import br.com.allfilms.film.service.HistoricService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +31,11 @@ public class HistoricController {
     @GetMapping("/{id}")
     public List<Historic> getHistoricId(@PathVariable("id") Long id) {
         return historicService.getHistoricId(id);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Historic> attHistoric(@PathVariable("id") Long id, @RequestBody HistoricDto historicDto) {
+        return historicService.attHistoric(id, historicDto);
     }
 
 }

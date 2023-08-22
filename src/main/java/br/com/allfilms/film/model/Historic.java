@@ -24,9 +24,6 @@ public class Historic {
     @Column(name = "review")
     private String review;
 
-    @Column(name = "stars")
-    private double stars;
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

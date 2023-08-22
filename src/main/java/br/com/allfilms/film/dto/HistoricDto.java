@@ -13,7 +13,6 @@ import org.modelmapper.convention.MatchingStrategies;
 public class HistoricDto {
 
     private String review;
-    private double stars;
     private Long user;
 
     private static ModelMapper modelMapper;

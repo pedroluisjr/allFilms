@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -53,4 +52,16 @@ public class HistoricService {
         }
     }
 
+    public ResponseEntity<Historic> attHistoric(Long id, HistoricDto historicDto) {
+        Optional<Historic> savedHistoric = historicRepository.findById(id);
+        if (savedHistoric.isPresent()) {
+            if (historicDto.getReview() != null) savedHistoric.get().setReview(historicDto.getReview());
+
+            userService.getUserById(historicDto.getUser()).ifPresent((user ->
+                    savedHistoric.get().setUser(historicDto.toHistoric().getUser())));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }
+
