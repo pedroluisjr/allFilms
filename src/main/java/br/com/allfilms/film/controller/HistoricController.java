@@ -18,10 +18,10 @@ public class HistoricController {
     @Autowired
     HistoricService historicService;
 
-    @PostMapping
-    public ResponseEntity<Historic> addHistoric(@RequestBody HistoricDto historicDto) {
-        return historicService.addHistoric(historicDto);
-    }
+//    @PostMapping
+//    public ResponseEntity<Historic> addHistoric(@RequestBody HistoricDto historicDto) {
+//        return historicService.addHistoric(historicDto);
+//    }
 
     @GetMapping
     public Page<HistoricDto> getHistoric(Pageable pageable) {

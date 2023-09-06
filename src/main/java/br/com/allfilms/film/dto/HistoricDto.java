@@ -12,12 +12,8 @@ import org.modelmapper.convention.MatchingStrategies;
 @NoArgsConstructor
 public class HistoricDto {
 
+    private String query;
     private String review;
-    private Long id;
-    private String original_language;
-    private String original_title;
-    private double vote_average;
-    private int vote_count;
     private Long user;
 
     private static ModelMapper modelMapper;
