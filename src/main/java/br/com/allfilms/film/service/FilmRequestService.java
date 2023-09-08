@@ -1,7 +1,7 @@
 package br.com.allfilms.film.service;
 
-import br.com.allfilms.film.dto.FilmQueryDto;
 import br.com.allfilms.film.dto.FilmRequestDto;
+import br.com.allfilms.film.dto.FilmResultDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,18 +14,17 @@ public class FilmRequestService {
     private String urlFilmApi = "https://api.themoviedb.org/3";
 
     //TODO: Realizar a consulta da API
-    public ResponseEntity<FilmRequestDto> getFilm(FilmQueryDto filmQueryDto) {
+    public ResponseEntity<FilmResultDto> getFilm(String space) {
 
-        String space = filmQueryDto.getQuery();
         space = space.replace(" ", "%20");
 
         HttpHeaders header = new HttpHeaders();
-                header.add("authorization", "Bearer "+ token);
+                header.add("Authorization", "Bearer "+ token);
 
         RestTemplate rest = new RestTemplate();
 
-        ResponseEntity<FilmRequestDto> filmResponse = rest.exchange(urlFilmApi + "/search/movie?query=" + space,
-                HttpMethod.GET, new HttpEntity<Object>(header), FilmRequestDto.class);
+        ResponseEntity<FilmResultDto> filmResponse = rest.exchange(urlFilmApi + "/search/movie?query=" + space +"&language=pt-BR",
+                HttpMethod.GET, new HttpEntity<Object>(header), FilmResultDto.class);
 
         if (filmResponse.getStatusCode() == HttpStatus.OK) {
             return ResponseEntity.ok(filmResponse.getBody());
