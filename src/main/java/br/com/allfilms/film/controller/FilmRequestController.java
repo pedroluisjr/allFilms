@@ -1,6 +1,6 @@
 package br.com.allfilms.film.controller;
 
-import br.com.allfilms.film.dto.FilmRequestDto;
+import br.com.allfilms.film.dto.FilmRequestByIdDto;
 import br.com.allfilms.film.dto.FilmResultDto;
 import br.com.allfilms.film.service.FilmRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,14 @@ public class FilmRequestController {
     @Autowired
     FilmRequestService filmRequestService;
 
-    @GetMapping("/{space}")
+    @GetMapping("/name/{space}")
     public ResponseEntity<FilmResultDto> getFilm(@PathVariable("space")String space) {
         return filmRequestService.getFilm(space);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<FilmRequestByIdDto> getFilmById(@PathVariable("id") Long id) {
+        return filmRequestService.getFilmById(id);
     }
 
 }

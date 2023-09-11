@@ -1,6 +1,5 @@
 package br.com.allfilms.film.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +23,12 @@ public class Historic {
     @Column(name = "review")
     private String review;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "movieId")
+    private Long movieId;
 
     @Column(name = "createdAt", updatable = false)
     @CreationTimestamp

@@ -1,7 +1,9 @@
 package br.com.allfilms.film.service;
 
+import br.com.allfilms.film.dto.FilmRequestByIdDto;
 import br.com.allfilms.film.dto.FilmRequestDto;
 import br.com.allfilms.film.dto.HistoricDto;
+import br.com.allfilms.film.dto.HistoricReturnDto;
 import br.com.allfilms.film.model.Historic;
 import br.com.allfilms.film.model.User;
 import br.com.allfilms.film.repository.HistoricRepository;
@@ -19,39 +21,39 @@ import java.util.Optional;
 @Service
 public class HistoricService {
 
+    private String token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTlkNWU1YmQyMzQxYTdiN2ZlNGMwNGNkZGVlOWQ3YyIsInN1YiI6IjY0ZTU0MDUyZDIzNmU2MDEzYjMxMzNkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VoAaq0GXiMWKBvZ_1tpprmAoo2KRgqQpe4NDvC-g-i4";
+
+    private String urlFilmApi = "https://api.themoviedb.org/3";
+
     @Autowired
     HistoricRepository historicRepository;
 
     @Autowired
+    FilmRequestService filmRequestService;
+
+    @Autowired
     UserService userService;
 
-//    private String token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTlkNWU1YmQyMzQxYTdiN2ZlNGMwNGNkZGVlOWQ3YyIsInN1YiI6IjY0ZTU0MDUyZDIzNmU2MDEzYjMxMzNkOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VoAaq0GXiMWKBvZ_1tpprmAoo2KRgqQpe4NDvC-g-i4";
-//
-//    private String urlFilmApi = "https://api.themoviedb.org/3";
-//
-//    //TODO: Realizar a consulta da API
-////    public ResponseEntity<Historic> addHistoric(HistoricDto historicDto) {
-////        HttpHeaders header = new HttpHeaders();
-////                header.add("authorization", "Bearer "+ token);
-////
-////        RestTemplate rest = new RestTemplate();
-////
-////        ResponseEntity<FilmRequestDto> filmResponse = rest.exchange(urlFilmApi + "/search/keyword", HttpMethod.GET, new HttpEntity<Object>(header), FilmRequestDto.class);
-////
-////        //TODO: CRIAR UM ENDPOINT NA MINHA API, UM ENDPOINT DE BUSCA QUE IRÁ RECEBER UMA STRING QUE SERIA A QUERY E SERÁ PÁGINADO, O ENDPOINT TERÁ UM SERVICE QUE IRÁ CONSUMIR O SERVICE COM A API DO MOVIEDB.
-////
-////    }
-
+    public ResponseEntity<Historic> addHistoric(HistoricDto historicDto) {
+        userService.getUserById(historicDto.getUser());
+        historicRepository.save(historicDto.toHistoric());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     public Page<HistoricDto> getHistoric(Pageable pageable) {
         return historicRepository.findAll(pageable).map(HistoricDto::new);
     }
 
-    public List<Historic> getHistoricId(Long id) {
-        Optional<User> existUserId = userService.getUserById(id);
-        if (existUserId.isPresent()) {
-            User existUser = existUserId.get();
-            return historicRepository.findByUser(existUser);
+    public List<HistoricReturnDto> getHistoricId(Long id) {
+
+        Optional<Historic> savedHist = historicRepository.findById(id);
+
+        HistoricReturnDto historicReturnDto = new HistoricReturnDto();
+
+        if (savedHist.isPresent()) {
+            userService.getUserById(historicReturnDto.getUser().getId());
+            filmRequestService.getFilmById(historicReturnDto.getHistoric().getMovieId());
+            return null;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

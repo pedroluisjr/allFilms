@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class FilmResultDto {
 
-    private Long page;
     private List<FilmRequestDto> results;
 
 }

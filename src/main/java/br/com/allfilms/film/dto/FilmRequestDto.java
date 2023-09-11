@@ -1,16 +1,11 @@
 package br.com.allfilms.film.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.jackson.Jacksonized;
-
-import javax.xml.transform.Result;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
