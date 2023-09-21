@@ -7,14 +7,12 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class HistoricDto {
 
-    private List<FilmRequestByIdDto> movieId;
+    private Long movieId;
     private String review;
     private Long user;
 
