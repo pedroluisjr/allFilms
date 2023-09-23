@@ -1,6 +1,7 @@
 package br.com.allfilms.film.controller;
 
 import br.com.allfilms.film.dto.HistoricDto;
+import br.com.allfilms.film.dto.HistoricReturnDto;
 import br.com.allfilms.film.model.Historic;
 import br.com.allfilms.film.service.HistoricService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class HistoricController {
     }
 
     @GetMapping("/{id}")
-    public List<Historic> getHistoricId(@PathVariable("id") Long id) {
-        return historicService.getHistoricId(id);
+    public ResponseEntity<HistoricReturnDto> getHistoricId(@PathVariable("id") Long id) {
+        return (historicService.getHistoricId(id));
     }
 
     @PatchMapping("/{id}")

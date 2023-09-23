@@ -23,7 +23,7 @@ public class Historic {
     @Column(name = "review")
     private String review;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

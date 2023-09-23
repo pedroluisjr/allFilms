@@ -35,7 +35,6 @@ public class HistoricService {
     UserService userService;
 
     public ResponseEntity<Historic> addHistoric(HistoricDto historicDto) {
-        userService.getUserById(historicDto.getUser());
         historicRepository.save(historicDto.toHistoric());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -44,7 +43,7 @@ public class HistoricService {
         return historicRepository.findAll(pageable).map(HistoricDto::new);
     }
 
-    public List<HistoricReturnDto> getHistoricId(Long id) {
+    public ResponseEntity<HistoricReturnDto> getHistoricId(Long id) {
 
         Optional<Historic> savedHist = historicRepository.findById(id);
 
@@ -52,8 +51,8 @@ public class HistoricService {
 
         if (savedHist.isPresent()) {
             userService.getUserById(historicReturnDto.getUser().getId());
-            filmRequestService.getFilmById(historicReturnDto.getHistoric().getMovieId());
-            return null;
+            filmRequestService.getFilmById(historicReturnDto.getHistoricDto().getMovieId());
+            return ResponseEntity.of(savedHist.map(HistoricReturnDto::new));
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
